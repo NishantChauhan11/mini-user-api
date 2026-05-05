@@ -2,10 +2,27 @@ const express = require("express");
 
 const app = express();
 const PORT = 3000;
+
+// Middleware
 app.use(express.json());
+
+// Custom Logger Middleware
+function logger(req, res, next) {
+    const currentTime = new Date().toLocaleTimeString();
+
+    console.log(`Request received at: ${currentTime}`);
+    console.log(`${req.method} ${req.url}`);
+
+    next();
+}
+
+// Use logger middleware
+app.use(logger);
+
+// Data storage
 let users = [];
 
-// Route
+// Routes
 app.get("/users", (req, res) => {
     res.json(users);
 });
